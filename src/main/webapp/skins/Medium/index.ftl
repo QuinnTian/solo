@@ -2,9 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <@head title="${blogTitle}">
     <#if metaKeywords??>
         <meta name="keywords" content="${metaKeywords}"/>
+        <meta name="baidu-site-verification" content="Z3JhteR0oo" />
     </#if>
     <#if metaDescription??>
         <meta name="description" content="${metaDescription}"/>

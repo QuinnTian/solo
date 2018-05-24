@@ -23,7 +23,7 @@
 -->
 <static-files>
     <!-- Uses the STANDARD Ant Path Pattern to configure these paths!  -->
-
+<include path="/opensearch.xml"/>
     <include path="/favicon.ico"/>
     <include path="/favicon.png"/>
     <include path="/robots.txt"/>

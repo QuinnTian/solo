@@ -1,149 +1,75 @@
-<div id="sideNavi" class="side-navi">
-    <#if "" != noticeBoard>
-    <ul class="marginTop12">
-        <li>
-            <h4>${noticeBoardLabel}</h4>
-        </li>
-        <li class="side-navi-notice">${noticeBoard}</li>
-    </ul>
-    <div class="line"></div>
-    </#if>
-    <#if 0 != recentComments?size>
-    <ul>
-        <li>
-            <h4>${recentCommentsLabel}</h4>
-        </li>
-        <li>
-            <ul id="recentComments">
-                <#list recentComments as comment>
-                <li>
-                    <#if "http://" == comment.commentURL>
-                    ${comment.commentName}<#else>
-                    <a target="_blank" href="${comment.commentURL}">
-                        ${comment.commentName}</a></#if>:
-                    <a rel="nofollow" class='side-comment' href="${servePath}${comment.commentSharpURL}">
-                        ${comment.commentContent}
-                    </a>
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    </#if>
-    <#if 0 != mostCommentArticles?size>
-    <ul>
-        <li>
-            <h4>${mostCommentArticlesLabel}</h4>
-        </li>
-        <li>
-            <ul>
-                <#list mostCommentArticles as article>
-                <li>
-                    <sup>[${article.articleCommentCount}]</sup><a rel="nofollow" title="${article.articleTitle}" 
-                                                                  href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    </#if>
-    <#if 0 != mostViewCountArticles?size>
-    <ul>
-        <li>
-            <h4>${mostViewCountArticlesLabel}</h4>
-        </li>
-        <li>
-            <ul id="mostViewCountArticles">
-                <#list mostViewCountArticles as article>
-                <li>
-                    <sup>[${article.articleViewCount}]</sup><a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    </#if>
-    <#if 0 != mostUsedTags?size>
-    <ul>
-        <li>
-            <h4>${popTagsLabel}</h4>
-        </li>
-        <li>
-            <ul>
-                <#list mostUsedTags as tag>
-                <li>
-                    <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}" class="no-underline">
-                        <img alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
-                    </a>
-                    <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
-                        ${tag.tagTitle}</a>
-                    (${tag.tagPublishedRefCount})
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    </#if>
-    <#if 0 != links?size>
-    <ul>
-        <li>
-            <h4>${linkLabel}</h4>
-        </li>
-        <li>
-            <ul id="sideLink">
-                <#list links as link>
-                <li>
-                     <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
-                        <img alt="${link.linkTitle}"
-                             src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" width="16" height="16" /></a>
-                    <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
-                    </a>
-                    <#-- ${link.linkDescription} -->
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    </#if>
-    <#if 0 != archiveDates?size>
-    <ul>
-        <li onclick="toggleArchive(this)" class="pointer">
-            <h4>${archiveLabel} +</h4>
-        </li>
-        <li class="none">
-            <ul>
-                <#list archiveDates as archiveDate>
-                <li>
-                    <#if "en" == localeString?substring(0, 2)>
-                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                       title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                        ${archiveDate.monthName} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
-                    <#else>
-                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                       title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
-                    </#if>
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    </#if>
+<script src="//lib.baomitu.com/jquery/2.2.4/jquery.min.js"></script>
+<script>
+  var clickme = function() {
+	  var abcon = '<div id="hideinfo"><p>本人男, 来自山东泰安，曾在济南上学.开设此独立博客用于记录工作、生活、学习.</p><p>专业：计算机软件相关</><p>爱好：Java、音乐、美剧</p><p></p><p> 地址：${servePath} <p></p></div>';
+		layer.open({
+			type:1, title:'ABOUT ME - ${blogTitle?html}', closeBtn:false, area:'320px', shade:0.3, id:'aboutlayer', resize:false,
+			btn:['\u6d88\u5931\u5427\u007e'], btnAlign:'c', moveType:1, content: abcon, success:function(layero){
+				layero.find('.layui-layer-btn .layui-layer-btn0').css({"border-color":"#333", "background-color":"#666"});
+			}
+		});
+  }, showToc = function() {
+	  $('.side .toc').removeClass("toc__panel--hide");
+	}, hideToc = function() {
+    $('.side .toc').addClass("toc__panel--hide");
+	};
+</script>
+<div class="side">
+<div class="overlay"><a href="javascript:showToc();" class="toc-btn iconfont icon-liebiao itip ifixed" id="art_dir" lang="${tocLabel}"></a></div>
+<header class="content">
+<a href="/">
+	<img class="avatar itip ifixed" id="logoicon" src="${adminUser.userAvatar}" title="${blogTitle?html}" alt="${blogTitle?html}"
+	lang="使用移动设备访问<br><img src='http://qr.liantu.com/api.php?text=${servePath}' width='123' height='123' border='1'>"/>
+</a>
+<hgroup><h1><a href="javascript:clickme();" class="itip ifixed" id="logofont" lang="请在 side.ftl 中修改成你要显示的提示信息。">${blogTitle}</a></h1></hgroup>
+<#if "" != noticeBoard>
+<p class="subtitle">${blogSubtitle}</p>
+</#if>
+<nav>
+	<ul>
+		<li>
+		  <a href="/archives.html"><span class="iconfont icon-rili itip ifixed" id="archives" lang="${archiveLabel}"></span></a><a href="/tags.html"><span class="iconfont icon-biaoqian itip ifixed" id="tags" lang="${allTagsLabel}"></span></a><a href="/dynamic.html"><span class="iconfont icon-jiaoyin itip ifixed" id="dynamic" lang="${dynamicLabel}"></span></a><a href="/links.html"><span class="iconfont icon-lianjie itip ifixed" id="links" lang="${linkLabel}"></span></a><a href="/search?keyword="><span class="iconfont icon-sousuo18 itip ifixed" id="search" lang="${searchLabel}"></span></a>
+		</li>
+		<#if 0 != pageNavigations?size>
+		<li class="hide">
+		  <#list pageNavigations as page>
+			<a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>&nbsp;
+		  </#list>
+		</li>
+		</#if>
+	</ul>
+</nav>
+</header>
+<footer>
+<#if noticeBoard??>
+<div>${noticeBoard}</div>
+</#if>
+<#-- 若要使用此行图标请将链接和相关信息修改为自己的 -->
+<div>
+	<a href="https://github.com/QuinnTian">
+	  <span class="iconfont icon-github mysites itip ifixed" id="mygit" lang="Github"></span>
+  </a> &nbsp;
+	<a href="https://weibo.com/u/2188663167">
+	  <span class="iconfont icon-wb mysites itip ifixed" id="myweibo" lang="官方微博"></span>
+  </a> &nbsp;
+	<a href="http://p95x8s7hh.bkt.clouddn.com/weixin_scan.png" rel="nofollow">
+	  <span class="iconfont icon-weixin1 mysites itip ifixed" id="mywechat"
+		 lang="<b>公众号:我在北纬36°</b><br><img src='http://qr.liantu.com/api.php?text=http://YourURL' width='123' height='123'/>"></span>
+	</a> &nbsp;
+	<a href="http://wpa.qq.com/msgrd?v=3&uin=530479731&site=qq&menu=yes" target="_blank">
+	  <span class="iconfont icon-qq1 mysites itip ifixed" id="myqq" lang="QQ消息" rel="nofollow"></span>
+  </a>
 </div>
-<ul id="head-category">
-    <#if 0 != mostUsedCategories?size>
-        <#list mostUsedCategories as category>
-            <li>
-                <a href="${servePath}/category/${category.categoryURI}"
-                   aria-label="${category.categoryTagCnt} ${tagsLabel}"
-                   class="tag tooltipped tooltipped-n">
-                    ${category.categoryTitle}</a>
-            </li>
-        </#list>
-    </#if>
-</ul>
+
+<#if isLoggedIn>
+<a href="${servePath}/admin-index.do#main" class="iconfont icon-shezhi itip ifixed" id="admin_do" lang="${adminLabel}" rel="nofollow"></a> &nbsp;&nbsp;
+<a href="/logout?goto=%2F" class="iconfont icon-tuichu itip ifixed" id="logout_do" lang="${logoutLabel}" rel="nofollow"></a>
+<#else>
+<a href="${servePath}/login" class="iconfont icon-jinru itip ifixed" id="login_do" lang="${loginLabel}" rel="nofollow"></a> &nbsp;&nbsp;
+<a href="${servePath}/#register" class="iconfont icon-tianjiayonghu itip ifixed" id="noreg" lang="暂未开放${registerLabel}" rel="nofollow"></a>
+</#if>&nbsp;&nbsp;
+<#-- 此处的反馈邮箱链接请到 http://openmail.qq.com/ 去申请开通。 -->
+<a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=YourKey" class="iconfont icon-xiaoxi itip ifixed" id="send_mail" lang="反馈" rel="nofollow"></a> &nbsp;&nbsp;
+<a rel="alternate" href="${servePath}/blog-articles-rss.do" class="iconfont icon-dingyue itip ifixed" id="rss_do" lang="${subscribeLabel}"></a>
+</footer>
+</div>

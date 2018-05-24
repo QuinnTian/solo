@@ -1,67 +1,72 @@
-<div class="content">
-	<div class="result-text"><!--TODO wptouch_core_body_result_text()--></div>
-    <#list articles as article>
-    <div class="post" id="post-${article.oId}">
-		<#if 0 lt article.articleCommentCount>
-		<div class="comment-bubble">${article.articleCommentCount}</div>
+<#list articles as article>
+<article>
+<header>
+	<h2>
+		<a rel="bookmark" href="${article.articlePermalink}">${article.articleTitle}</a>
+		<#if article.hasUpdated>
+		<sup><span class="iconfont icon-xin itip" id="artUdp${article_index}" lang="${updatedLabel}"></span></sup>
 		</#if>
-		<script type="text/javascript">
-			$wpt(document).ready(function(){
-				$wpt("a#arrow-${article.oId}").bind( touchStartOrClick, function(e) {
-					$wpt(this).toggleClass("post-arrow-down");
-					$wpt('#entry-${article.oId}').wptouchFadeToggle(500);
-				});	
-			 });					
-		</script>
-		<a class="post-arrow" id="arrow-${article.oId}" href="javascript: return false;"></a>
-		<div class="calendar">
-			<div class="cal-month month-${article.articleUpdateDate?string("MM")}">${article.articleUpdateDate?string("MM")}</div>
-			<div class="cal-date">${article.articleUpdateDate?string("dd")}</div>
-		</div>	
-		<a rel="bookmark" class="h2" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
-		<div class="post-author">
-			<span class="lead">By</span> ${article.authorName}<br />
-			<span class="lead">${tags1Label}</span> 
-            <#list article.articleTags?split(",") as articleTag>
-                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                    ${articleTag}</a><#if articleTag_has_next>,</#if>
-            </#list>		
-		</div>	
-		<div class="clearer"></div>	
-        <div id="entry-${article.oId}" style="display:none" class="mainentry left-justified">
-			${article.articleAbstract}
-			<a class="read-more" href="${servePath}${article.articlePermalink}">${readThisPost}</a>
-        </div>  
-      </div>
-    </div>
-    </#list>
-<!--TODO ajax load page
-	<div id="call${paginationCurrentPageNum}" class="ajax-load-more">
-		<div id="spinner${paginationCurrentPageNum}" class="spin"	 style="display:none"></div>
-		<a class="ajax" href="javascript:void(0)" onclick="$wpt('#spinner${paginationCurrentPageNum}').fadeIn(200); $wpt('#ajaxentries${paginationCurrentPageNum}').load('${path}/${paginationPreviousPageNum}', {}, function(){ $wpt('#call${paginationCurrentPageNum}').fadeOut();});">
-			Load more entries...
-		</a>
-	</div>
-	<div id="ajaxentries${paginationCurrentPageNum}"></div>
--->
-    <#if 0 != paginationPageCount>
-    <div class="ajax-load-more">
-        <#if 1 != paginationPageNums?first>
-        <a href="${servePath}${path}/1">${firstPageLabel}</a>
-        <a id="previousPage" href="${servePath}${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
-        </#if>
-        <#list paginationPageNums as paginationPageNum>
-        <#if paginationPageNum == paginationCurrentPageNum>
-        <a href="${servePath}${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
-        <#else>
-        <a href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
-        </#if>
-        </#list>
-        <#if paginationPageNums?last != paginationPageCount>
-        <a id="nextPage" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel}</a>
-        <a href="${servePath}${path}/${paginationPageCount}">${lastPageLabel}</a>
-        </#if>
-        &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
-    </div>
+		<#if article.articlePutTop>
+		<sup><span class="iconfont icon-zhiding2 itip" id="artTop${article_index}" lang="${topArticleLabel}"></span></sup>
+		</#if>
+	</h2>
+	<time class="itip" id="time_${article_index}" lang="发表于 ${article.articleCreateDate?string("yyyy年MM月dd日 HH:mm")}"><span class="icon-date"></span>
+	${article.articleCreateDate?string("yyyy-MM-dd")}</time>
+</header>
+<section class="abstract">${article.articleAbstract}</section>
+<footer class="tags">
+	<span class="icon-tag"></span>  &nbsp;
+	<#list article.articleTags?split(",") as articleTag>
+	<a class="tag" rel="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
+	</#list>
+	<#-- <a rel="nofollow" href="/authors/${article.authorId}"></a> -->
+	<img class="avatar itip" id="ava_${article_index}" alt="Seves" lang="发表人 ${article.authorName}" src="${article.authorThumbnailURL}"/>
+</footer>
+</article>
+</#list>
+<#if (articles?size<1)>
+<article>
+<header>
+	<h2><i class="iconfont icon-kulian" style="font-size:inherit;"></i> 当前页面无内容</h2>
+</header>
+<section class="abstract">
+	<h4>温馨提示：</h4>
+	<p>当前页面暂无相关内容，您可能访问了超过文章列表实际页数的页面。</p>
+	<p>最大页数为<b> ${paginationPageCount!"0"} </b>页，请在底部选择合适的页面进行访问，感谢您的配合。</p>
+	<div class="iconfont icon-4043" style="font-size:200px;width:270px;margin:0 auto;"><sup><i class="iconfont icon-4041" style="font-size:60px;"></i></sup></div>
+</section>
+<footer class="tags">
+	<span class="icon-tag"></span> &nbsp;
+	<a class="tag color2" rel="tag">404</a> <a class="tag color3" rel="tag">NOTHING</a>
+	<a rel="nofollow" href="/">
+		<img class="avatar itip" id="ava_nul" alt="${blogTitle?html}" lang="${blogTitle?html}" src="/favicon.png"/>
+	</a>
+</footer>
+</article>
+</#if>
+<#if 0 != paginationPageCount>
+<nav class="pagination">
+  <#-- 上一页 -->
+  <#if 1 != paginationPageNums?first>
+    <a href="${servePath}${path}/${paginationPreviousPageNum}" class="extend iconfont icon-xiangzuo1 itip" id="prev_page" lang="${previousPageLabel}"></a>
+    <a class="page-num" href="${servePath}${path}">1</a> ...
+  </#if>
+  <#list paginationPageNums as paginationPageNum>
+    <#-- 当前页 -->
+    <#if paginationPageNum == paginationCurrentPageNum>
+      <span class="current page-num">${paginationPageNum}</span>
+	<#-- 第一页 -->
+    <#elseif paginationPageNum == 1>
+      <a class="page-num" href="${path}/">${paginationPageNum}</a>
+	<#-- 其他页 -->
+    <#else>
+      <a class="page-num" href="${path}/${paginationPageNum}">${paginationPageNum}</a>
     </#if>
-</div>
+  </#list>
+  <#-- 下一页 -->
+  <#if paginationPageNums?last != paginationPageCount> ...
+    <a href="${servePath}${path}/${paginationPageCount}" class="page-num">${paginationPageCount}</a>
+    <a href="${servePath}${path}/${paginationNextPageNum}" class="extend iconfont icon-xiangyou2 itip" id="next_page" lang="${nextPagePabel}"></a>
+  </#if>
+</nav>
+</#if>
